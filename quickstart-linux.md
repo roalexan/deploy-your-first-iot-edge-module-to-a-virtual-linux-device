@@ -141,13 +141,11 @@ The rest of the commands in this quickstart take place on your IoT Edge device i
 
 Once connected to your virtual machine, verify that the runtime was successfully installed and configured on your IoT Edge device.
 
-1. Check to see that the IoT Edge security daemon is running as a system service.
+1. Check to see that IoT Edge is running. The following command should return a status of **Ok** if IoT Edge is running, or provide any service errors.
 
    ```bash
-   sudo systemctl status iotedge
+   sudo iotedge system status
    ```
-
-   ![See the IoT Edge daemon running as a system service](./media/quickstart-linux/iotedged-running.png)
 
    >[!TIP]
    >You need elevated privileges to run `iotedge` commands. Once you sign out of your machine and sign back in the first time after installing the IoT Edge runtime, your permissions are automatically updated. Until then, use `sudo` in front of the commands.
@@ -155,7 +153,7 @@ Once connected to your virtual machine, verify that the runtime was successfully
 2. If you need to troubleshoot the service, retrieve the service logs.
 
    ```bash
-   journalctl -u iotedge
+   sudo iotedge system logs
    ```
 
 3. View all the modules running on your IoT Edge device. Since the service just started for the first time, you should only see the **edgeAgent** module running. The edgeAgent module runs by default and helps to install and start any additional modules that you deploy to your device.
@@ -163,8 +161,6 @@ Once connected to your virtual machine, verify that the runtime was successfully
    ```bash
    sudo iotedge list
    ```
-
-   ![View one module on your device](./media/quickstart-linux/iotedge-list-1.png)
 
 Your IoT Edge device is now configured. It's ready to run cloud-deployed modules.
 
