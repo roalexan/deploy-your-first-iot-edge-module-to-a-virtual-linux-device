@@ -87,9 +87,6 @@ During the runtime configuration, you provide a device connection string. This i
 
 This section uses an Azure Resource Manager template to create a new virtual machine and install the IoT Edge runtime on it. If you want to use your own Linux device instead, you can follow the installation steps in [Manually provision a single Linux IoT Edge device](how-to-provision-single-device-linux-symmetric.md), then return to this quickstart.
 
-<!-- 1.1 -->
-:::moniker range="iotedge-2018-06"
-
 Use the following CLI command to create your IoT Edge device based on the prebuilt [iotedge-vm-deploy](https://github.com/Azure/iotedge-vm-deploy) template.
 
 * For bash or Cloud Shell users, copy the following command into a text editor, replace the placeholder text with your information, then copy into your bash or Cloud Shell window:
@@ -117,12 +114,6 @@ Use the following CLI command to create your IoT Edge device based on the prebui
    --parameters authenticationType='password' `
    --parameters adminPasswordOrKey="<REPLACE_WITH_PASSWORD>"
    ```
-
-:::moniker-end
-<!-- end 1.1 -->
-
-<!-- 1.2 -->
-:::moniker range=">=iotedge-2020-11"
 
 Use the following CLI command to create your IoT Edge device based on the prebuilt [iotedge-vm-deploy](https://github.com/Azure/iotedge-vm-deploy/tree/1.2) template.
 
