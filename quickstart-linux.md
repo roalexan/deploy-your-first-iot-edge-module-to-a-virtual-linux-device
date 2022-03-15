@@ -186,7 +186,7 @@ Follow these steps to start the **Set Modules** wizard to deploy your first modu
 
 1. On the upper bar, select **Set Modules**.
 
-   ![Screenshot that shows selecting Set Modules.](./media/quickstart/select-set-modules.png)
+   ![Screenshot that shows selecting Set Modules.](./media/quickstart-linux/select-set-modules.png)
 
 ### Modules
 
@@ -194,12 +194,9 @@ The first step of the wizard is to choose which modules you want to run on your 
 
 Under **IoT Edge Modules**, open the **Add** drop-down menu, and then select **Marketplace Module**.
 
-   ![Screenshot that shows the Add drop-down menu.](./media/quickstart/add-marketplace-module.png)
+   ![Screenshot that shows the Add drop-down menu.](./media/quickstart-linux/add-marketplace-module.png)
 
 In **IoT Edge Module Marketplace**, search for and select the `Simulated Temperature Sensor` module. The module is added to the IoT Edge Modules section with the desired **running** status.
-
-<!-- 1.2 -->
-:::moniker range=">=iotedge-2020-11"
 
 Select **Runtime Settings** to open the settings for the edgeHub and edgeAgent modules. This settings section is where you can manage the runtime modules by adding environment variables or changing the create options.
 
@@ -210,12 +207,9 @@ Update the **Image** field for both the edgeHub and edgeAgent modules to use the
 
 Select **Save** to apply your changes to the runtime modules.
 
-:::moniker-end
-<!--end 1.2-->
-
 Select **Next: Routes** to continue to the next step of the wizard.
 
-   ![Screenshot that shows continuing to the next step after the module is added.](./media/quickstart/view-temperature-sensor-next-routes.png)
+   ![Screenshot that shows continuing to the next step after the module is added.](./media/quickstart-linux/view-temperature-sensor-next-routes.png)
 
 ### Routes
 
@@ -224,7 +218,7 @@ On the **Routes** tab, remove the default route, **route**, and then select **Ne
    >[!Note]
    >Routes are constructed by using name and value pairs. You should see two routes on this page. The default route, **route**, sends all messages to IoT Hub (which is called `$upstream`). A second route, **SimulatedTemperatureSensorToIoTHub**, was created automatically when you added the module from Azure Marketplace. This route sends all messages from the simulated temperature module to IoT Hub. You can delete the default route because it's redundant in this case.
 
-   ![Screenshot that shows removing the default route then moving to the next step.](./media/quickstart/delete-route-next-review-create.png)
+   ![Screenshot that shows removing the default route then moving to the next step.](./media/quickstart-linux/delete-route-next-review-create.png)
 
 ### Review and create
 
@@ -237,7 +231,7 @@ After you create the module deployment details, the wizard returns you to the de
 
 You should see three modules: **$edgeAgent**, **$edgeHub**, and **SimulatedTemperatureSensor**. If one or more of the modules has **YES** under **SPECIFIED IN DEPLOYMENT** but not under **REPORTED BY DEVICE**, your IoT Edge device is still starting them. Wait a few minutes, and then refresh the page.
 
-   ![Screenshot that shows Simulated Temperature Sensor in the list of deployed modules.](./media/quickstart/view-deployed-modules.png)
+   ![Screenshot that shows Simulated Temperature Sensor in the list of deployed modules.](./media/quickstart-linux/view-deployed-modules.png)
 
 ## View generated data
 
@@ -251,15 +245,7 @@ Open the command prompt on your IoT Edge device again, or use the SSH connection
    sudo iotedge list
    ```
 
-<!-- 1.1 -->
-:::moniker range="iotedge-2018-06"
-   ![View three modules on your device](./media/quickstart-linux/iotedge-list-2-version-201806.png)
-:::moniker-end
-
-<!-- 1.2 -->
-:::moniker range=">=iotedge-2020-11"
-   ![View three modules on your device](./media/quickstart-linux/iotedge-list-2-version-202011.png)
-:::moniker-end
+![View three modules on your device](./media/quickstart-linux/iotedge-list-2-version-202011.png)
 
 View the messages being sent from the temperature sensor module:
 
