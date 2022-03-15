@@ -67,7 +67,7 @@ Since IoT Edge devices behave and can be managed differently than typical IoT de
    az iot hub device-identity connection-string show --device-id myEdgeDevice --hub-name {hub_name}
    ```
 
-   ![View connection string from CLI output](./media/quickstart/retrieve-connection-string.png)
+   ![View connection string from CLI output](./media/quickstart-linux/retrieve-connection-string.png)
 
 ## Configure your IoT Edge device
 
