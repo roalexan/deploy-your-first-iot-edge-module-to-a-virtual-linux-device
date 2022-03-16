@@ -41,27 +41,59 @@ az configure --defaults group=${RESOURCE_GROUP}
 
 ## CREATE RESOURCE GROUP
 
-#az group create -l ${LOCATION} -n ${RESOURCE_GROUP} --tags alias=${ALIAS}
+az group create -l ${LOCATION} -n ${RESOURCE_GROUP} --tags alias=${ALIAS}
 
 ## CREATE IOT HUB
 
-#create_iot_hub ${RESOURCE_GROUP} ${HUB_NAME}
+create_iot_hub ${RESOURCE_GROUP} ${HUB_NAME}
 
 ## REGISTER IOT EDGE DEVICE
 
-#register_iot_device ${IOT_EDGE_DEVICE_ID} ${HUB_NAME}
+register_iot_device ${IOT_EDGE_DEVICE_ID} ${HUB_NAME}
 
 ## CREATE VM WITH AZURE IOT EDGE RUNTIME ON IT
 
-#create_iot_vm ${RESOURCE_GROUP} ${VM_NAME} ${VM_USER_NAME} ${VM_PASSWORD} ${IOT_EDGE_DEVICE_ID} ${HUB_NAME}
+create_iot_vm ${RESOURCE_GROUP} ${VM_NAME} ${VM_USER_NAME} ${VM_PASSWORD} ${IOT_EDGE_DEVICE_ID} ${HUB_NAME}
+
+exit
 
 ## VIEW STATUS
 
-#view_status ${DNS_NAME} ${VM_USER_NAME} ${VM_PASSWORD}
+view_status ${DNS_NAME} ${VM_USER_NAME} ${VM_PASSWORD}
 
 ## DEPLOY A MODULE
 
+portal: your iothub
+select: left menu: device management: iot edge
+select: your device
+select: upper bar: set modules
+click: iot edge modules: add
+select: marketplace module
+search: Simulated Temperature Sensor
+click: Simulated Temperature Sensor
+click: runtime settings
+  tab: edge agent
+    paste: image uri: mcr.microsoft.com/azureiotedge-agent:1.2
+  tab: edge hub
+    paste: image uri: mcr.microsoft.com/azureiotedge-hub:1.2
+click: apply
+    mcr.microsoft.com/azureiotedge-hub:1.2
+click: "next: routes >"
+delete: route # the default route
+click: "next: review + create"
+click: create
 
+## VIEW GENERATED DATA
+
+sshpass -p ${VM_PASSWORD} ssh ${VM_USER_NAME}@${DNS_NAME} -o "StrictHostKeyChecking no"
+sudo iotedge list
+
+  NAME                        STATUS           DESCRIPTION      CONFIG
+  SimulatedTemperatureSensor  running          Up 2 minutes     mcr.microsoft.com/azureiotedge-simulated-temperature-sensor:1.0
+  edgeAgent                   running          Up 17 minutes    mcr.microsoft.com/azureiotedge-agent:1.2
+  edgeHub                     running          Up 2 minutes     mcr.microsoft.com/azureiotedge-hub:1.2
+
+sudo iotedge logs SimulatedTemperatureSensor -f
 
 ## DELETE RESOURCE GROUP WHEN NO LONGER NEEDED
 

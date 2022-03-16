@@ -1,0 +1,145 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dnsLabelPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
+      }
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "User name for the Virtual Machine."
+      }
+    },
+    "deviceConnectionString": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "IoT Edge Device Connection String"
+      }
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_DS1_v2",
+      "metadata": {
+        "description": "VM size"
+      }
+    },
+    "ubuntuOSVersion": {
+      "type": "string",
+      "defaultValue": "20_04-lts",
+      "metadata": {
+        "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version."
+      }
+    },
+    "authenticationType": {
+      "type": "string",
+      "defaultValue": "sshPublicKey",
+      "allowedValues": [
+        "sshPublicKey",
+        "password"
+      ],
+      "metadata": {
+        "description": "Type of authentication to use on the Virtual Machine. SSH key is recommended."
+      }
+    },
+    "adminPasswordOrKey": {
+      "type": "securestring",
+      "metadata": {
+        "description": "SSH Key or password for the Virtual Machine. SSH key is recommended."
+      }
+    },
+    "allowSsh": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Allow SSH traffic through the firewall"
+      }
+    }
+  },
+  "variables": {
+    "imagePublisher": "Canonical",
+    "imageOffer": "0001-com-ubuntu-server-focal",
+    "nicName": "[concat('nic-', uniquestring(parameters('dnsLabelPrefix')))]",
+    "vmName": "[parameters('dnsLabelPrefix')]",
+    "virtualNetworkName": "[concat('vnet-', uniquestring(parameters('dnsLabelPrefix')))]",
+    "publicIPAddressName": "[concat('ip-', parameters('dnsLabelPrefix'))]",
+    "addressPrefix": "10.0.0.0/16",
+    "subnet1Name": "[concat('subnet-', uniquestring(parameters('dnsLabelPrefix')))]",
+    "subnet1Prefix": "10.0.0.0/24",
+    "publicIPAddressType": "Dynamic",
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
+    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
+    "linuxConfiguration": {
+      "disablePasswordAuthentication": true,
+      "ssh": {
+        "publicKeys": [{
+          "path": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]",
+          "keyData": "[parameters('adminPasswordOrKey')]"
+        }]
+      }
+    },
+    "dcs": "[parameters('deviceConnectionString')]",
+    "networkSecurityGroupName": "[concat('nsg-', uniquestring(parameters('dnsLabelPrefix')))]",
+    "sshRule": [{
+      "name": "default-allow-22",
+      "properties": {
+        "priority": 1000,
+        "access": "Allow",
+        "direction": "Inbound",
+        "destinationPortRange": "22",
+        "protocol": "Tcp",
+        "sourceAddressPrefix": "*",
+        "sourcePortRange": "*",
+        "destinationAddressPrefix": "*"
+      }
+    }],
+    "noRule": []
+  },
+  "resources": [],
+  "outputs": {
+    //"PublicFQDN": {
+    //  "type": "string",
+    //  "value": "[concat('FQDN: ', reference(resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))).dnsSettings.fqdn)]"
+    //},
+    //"PublicSSH": {
+    //  "type": "string",
+    //  "value": "[concat('SSH : ssh ', reference(resourceId('Microsoft.Compute/virtualMachines', variables('vmName'))).osProfile.adminUsername, '@', reference(resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))).dnsSettings.fqdn)]"
+    //}
+    "dnsLabelPrefix": {
+      "type": "string",
+      "value": "[parameters('dnsLabelPrefix')]"
+    },
+    "adminUsername": {
+      "type": "string",
+      "value": "[parameters('adminUsername')]"
+    },
+    "deviceConnectionString": {
+      "type": "string",
+      "value": "[parameters('deviceConnectionString')]"
+    },
+    "vmSize": {
+      "type": "string",
+      "value": "[parameters('vmSize')]"
+    },
+    "ubuntuOSVersion": {
+      "type": "string",
+      "value": "[parameters('ubuntuOSVersion')]"
+    },
+    "authenticationType": {
+      "type": "string",
+      "value": "[parameters('authenticationType')]"
+    },
+    "adminPasswordOrKey": {
+      "type": "securestring",
+      "value": "[parameters('adminPasswordOrKey')]"
+    },
+    "allowSsh": {
+      "type": "bool",
+      "value": "[parameters('allowSsh')]"
+    } 
+  }
+}
